@@ -45,9 +45,7 @@ const linksLogic = async (channelLink) => {
     // Extraer los links de los videos
     const videos = await page.evaluate(() => {
       const videoElements = Array.from(
-        document.querySelectorAll(
-          ".yt-simple-endpoint.style-scope.ytd-playlist-thumbnail"
-        )
+        document.querySelectorAll("#video-title-link")
       );
       return videoElements.map((video) => ({ href: video.href }));
     });
