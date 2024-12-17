@@ -21,6 +21,9 @@ const linksLogic = async (channelLink) => {
     });
 
     const page = await browser.newPage();
+    await page.setUserAgent(
+      "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36"
+    );
     await page.goto(URL, { waitUntil: "domcontentloaded" });
 
     // Realizar scroll para cargar todos los videos
@@ -32,7 +35,7 @@ const linksLogic = async (channelLink) => {
       await page.evaluate(() =>
         window.scrollTo(0, document.documentElement.scrollHeight)
       );
-      await new Promise((resolve) => setTimeout(resolve, 300));
+      await new Promise((resolve) => setTimeout(resolve, 500));
 
       const newHeight = await page.evaluate(
         () => document.documentElement.scrollHeight
