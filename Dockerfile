@@ -12,9 +12,10 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     fonts-ipafont-gothic fonts-wqy-zenhei fonts-thai-tlwg fonts-khmeros \
     fonts-kacst fonts-freefont-ttf dbus dbus-x11 libnss3 libatk1.0-0 \
     libx11-xcb1 libxcomposite1 libxcursor1 libxdamage1 libxi6 libxtst6 \
-    libnss3 libgconf-2-4 libasound2 libpangocairo-1.0-0 libxrandr2 \
-    libcups2 libatk-bridge2.0-0 libgbm1 xdg-utils ca-certificates \
-    --no-install-recommends
+    libgconf-2-4 libasound2 libpangocairo-1.0-0 libxrandr2 \
+    libcups2 libatk-bridge2.0-0 libgbm1 libxkbcommon0 xdg-utils ca-certificates \
+    --no-install-recommends \
+    && rm -rf /var/lib/apt/lists/*
 
 # Configurar un usuario no-root para seguridad
 RUN groupadd -r pptruser && useradd -u 10042 -rm -g pptruser -G audio,video pptruser
