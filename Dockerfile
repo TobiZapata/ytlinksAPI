@@ -38,3 +38,8 @@ RUN PUPPETEER_CACHE_DIR=/home/pptruser/.cache/puppeteer \
 USER $PPTRUSER_UID
 # Generate THIRD_PARTY_NOTICES using chrome --credits.
 RUN node -e "require('child_process').execSync(require('puppeteer').executablePath() + ' --credits', {stdio: 'inherit'})" > THIRD_PARTY_NOTICES
+
+# Expone el puerto (si es necesario)
+EXPOSE 4000
+
+CMD ["node", "index.js"]
