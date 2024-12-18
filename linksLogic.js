@@ -62,7 +62,7 @@ const linksLogic = async (channelLink) => {
     });
 
     array = [...array, ...newVideos];
-
+    console.log(array);
     await browser.close();
 
     return array;
