@@ -45,7 +45,8 @@ const linksLogic = async (channelLink) => {
       );
       if (newHeight === previousHeight) break;
     }
-
+    console.log("abajo");
+    console.log(document);
     // links de los videos
     const videos = await page.evaluate(() => {
       const videoElements = Array.from(
