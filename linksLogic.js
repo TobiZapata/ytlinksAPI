@@ -27,7 +27,7 @@ const linksLogic = async (channelLink) => {
     });
     const page = await browser.newPage();
     console.log("browser abierto en una nueva ventana");
-    await page.goto(URL, { waitUntil: "domcontentloaded" });
+    await page.goto(URL);
 
     //scroll para cargar todos los video
 
