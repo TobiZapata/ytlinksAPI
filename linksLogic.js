@@ -2,7 +2,6 @@ const puppeteer = require("puppeteer-core");
 const chromium = require("@sparticuz/chromium-min");
 
 chromium.setHeadlessMode = true;
-chromium.setGraphicsMode = false;
 
 const linksLogic = async (channelLink) => {
   try {
@@ -30,8 +29,6 @@ const linksLogic = async (channelLink) => {
     console.log("browser abierto en una nueva ventana");
     await page.goto(URL, { waitUntil: "domcontentloaded" });
 
-    await page.waitForSelector("#video-title");
-    console.log("Selector de videos encontrado");
     //scroll para cargar todos los videos
     let array = [];
     let previousHeight;
