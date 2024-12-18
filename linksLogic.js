@@ -38,7 +38,7 @@ const linksLogic = async (channelLink) => {
       await page.evaluate(() =>
         window.scrollTo(0, document.documentElement.scrollHeight)
       );
-      await new Promise((resolve) => setTimeout(resolve, 400));
+      await new Promise((resolve) => setTimeout(resolve, 300));
 
       const newHeight = await page.evaluate(
         () => document.documentElement.scrollHeight
@@ -47,17 +47,24 @@ const linksLogic = async (channelLink) => {
     }
     console.log("abajo");
     // links de los videos
-    const videos = await page.evaluate(() => {
-      const videoElements = Array.from(
+    const newVideos = await page.evaluate(() => {
+      const videos = Array.from(
         document.querySelectorAll(
           ".yt-simple-endpoint.style-scope.ytd-playlist-thumbnail"
         )
       );
-      return videoElements.map((video) => ({ href: video.href }));
+
+      return videos.map((video) => {
+        const href = video.href;
+        return { href };
+      });
     });
-    console.log(videos);
+
+    array = [...array, ...newVideos];
+
     await browser.close();
-    return videos;
+
+    return array;
   } catch (error) {
     console.error("Error en linksLogic:", error);
     throw error;
