@@ -43,7 +43,7 @@ const linksLogic = async (channelLink) => {
     console.log("abajo");
     // links de los videos
     const newVideos = await page.evaluate(() => {
-      const videos = Array.from(document.querySelectorAll("#video-title-link"));
+      const videos = Array.from(document.querySelectorAll("#video-title"));
       return videos; /* .map((video) => {
         const href = video.href;
         return { href };
