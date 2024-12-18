@@ -21,7 +21,7 @@ app.post("/links", async (req, res) => {
     }
     const result = await linksLogic(channelLink);
 
-    res.json({ result });
+    res.json({ array: result });
   } catch (error) {
     console.error("Error en la ruta /links:", error);
     res.status(500).json({ error: "Hubo un problema al obtener los videos." });

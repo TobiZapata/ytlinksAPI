@@ -7,6 +7,7 @@ chromium.setGraphicsMode = false;
 const linksLogic = async (channelLink) => {
   try {
     const URL = `${channelLink}/videos`;
+    console.log(URL);
     const isLocal = !!process.env.CHROME_EXECUTABLE_PATH;
     const browser = await puppeteer.launch({
       args: isLocal
