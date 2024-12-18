@@ -11,9 +11,7 @@ const linksLogic = async (channelLink) => {
 
     const browser = await puppeteer.launch({
       args: [...chromium.args, "--hide-scrollbars", "--no-sandbox"],
-      executablePath: await chromium.executablePath(
-        "https://tobiassets.s3.us-east-2.amazonaws.com/chromium-v131.0.1-pack.tar"
-      ),
+      executablePath: await chromium.executablePath(),
       headless: chromium.headless,
       defaultViewport: chromium.defaultViewport,
     });
