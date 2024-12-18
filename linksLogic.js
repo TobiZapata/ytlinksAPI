@@ -30,6 +30,8 @@ const linksLogic = async (channelLink) => {
     console.log("browser abierto en una nueva ventana");
     await page.goto(URL, { waitUntil: "domcontentloaded" });
 
+    await page.waitForSelector("#video-title", { timeout: 3000 });
+    console.log("Selector de videos encontrado");
     //scroll para cargar todos los videos
     let array = [];
     let previousHeight;
@@ -50,11 +52,7 @@ const linksLogic = async (channelLink) => {
     console.log("abajo");
     // links de los videos
     const newVideos = await page.evaluate(() => {
-      const videos = Array.from(
-        document.querySelectorAll(
-          ".yt-simple-endpoint.style-scope.ytd-playlist-thumbnail"
-        )
-      );
+      const videos = Array.from(document.querySelectorAll("#video-title"));
 
       return videos.map((video) => {
         const href = video.href;
