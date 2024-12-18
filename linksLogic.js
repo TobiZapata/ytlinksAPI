@@ -46,13 +46,17 @@ const linksLogic = async (channelLink) => {
       if (newHeight === previousHeight) break;
     }
     console.log("abajo");
-    console.log(document);
+
+    const pageContent = await page.content();
+    console.log("Contenido completo del DOM:");
+    console.log(pageContent);
     // links de los videos
     const videos = await page.evaluate(() => {
       const videoElements = Array.from(
-        document.querySelectorAll("a#video-title")
+        document.querySelectorAll(
+          ".yt-simple-endpoint.style-scope.ytd-playlist-thumbnail"
+        )
       );
-      console.log(videoElements);
       return videoElements.map((video) => ({ href: video.href }));
     });
 
