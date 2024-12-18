@@ -30,6 +30,7 @@ const linksLogic = async (channelLink) => {
     await page.goto(URL, { waitUntil: "domcontentloaded" });
 
     //scroll para cargar todos los videos
+    let array = [];
     let previousHeight;
     while (true) {
       previousHeight = await page.evaluate(
