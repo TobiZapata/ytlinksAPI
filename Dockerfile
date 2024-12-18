@@ -1,56 +1,40 @@
-# Usar una imagen base oficial de Node
-FROM node:22
+FROM node:22@sha256:35a5dd72bcac4bce43266408b58a02be6ff0b6098ffa6f5435aeea980a8951d7
 
-# Establecer el entorno de idioma
-ENV LANG=en_US.UTF-8
+ENV \
+    # Configure default locale (important for chrome-headless-shell).
+    LANG=en_US.UTF-8 \
+    # UID of the non-root user 'pptruser'
+    PPTRUSER_UID=10042
 
-# Actualizar los paquetes existentes y agregar el repositorio de Google Chrome
+# Install latest chrome dev package and fonts to support major charsets (Chinese, Japanese, Arabic, Hebrew, Thai and a few others)
+# Note: this installs the necessary libs to make the bundled version of Chrome that Puppeteer
+# installs, work.
 RUN apt-get update \
-    && apt-get install -y \
-    curl \
-    gnupg \
-    ca-certificates \
-    --no-install-recommends \
-    && curl --silent --location https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - \
-    && sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google-chrome.list' \
-    && apt-get update
+    && apt-get install -y --no-install-recommends fonts-ipafont-gothic fonts-wqy-zenhei fonts-thai-tlwg fonts-khmeros \
+    fonts-kacst fonts-freefont-ttf dbus dbus-x11
 
-# Ahora puedes instalar Google Chrome
-RUN apt-get install -y google-chrome-stable --no-install-recommends
+# Add pptruser.
+RUN groupadd -r pptruser && useradd -u $PPTRUSER_UID -rm -g pptruser -G audio,video pptruser
 
-# Instalar dependencias necesarias para Puppeteer
-RUN apt-get install -y \
-    libnss3 \
-    libxkbcommon0 \
-    libx11-xcb1 \
-    libappindicator3-1 \
-    libasound2 \
-    libatk-bridge2.0-0 \
-    libatk1.0-0 \
-    libcups2 \
-    libgdk-pixbuf2.0-0 \
-    libnspr4 \
-    libxss1 \
-    libgbm1 \
-    libgtk-3-0 \
-    libdbus-1-3 \
-    --no-install-recommends \
-    && rm -rf /var/lib/apt/lists/*
-
-# Crear un usuario no root
-RUN groupadd -r pptruser && useradd -m -r -g pptruser pptruser
-
-# Cambiar al usuario no root
-USER pptruser
+USER $PPTRUSER_UID
 
 WORKDIR /home/pptruser
 
-# Copiar los archivos de tu aplicación y las dependencias de Puppeteer
-COPY --chown=pptruser:pptruser package*.json ./
-RUN npm install
+COPY puppeteer-browsers-latest.tgz puppeteer-latest.tgz puppeteer-core-latest.tgz ./
 
-# Copiar el resto de los archivos de tu proyecto
-COPY --chown=pptruser:pptruser . .
+ENV DBUS_SESSION_BUS_ADDRESS autolaunch:
 
-# Establecer el comando para iniciar tu aplicación
-CMD ["node", "index.js"]
+# Install @puppeteer/browsers, puppeteer and puppeteer-core into /home/pptruser/node_modules.
+RUN npm i ./puppeteer-browsers-latest.tgz ./puppeteer-core-latest.tgz ./puppeteer-latest.tgz \
+    && rm ./puppeteer-browsers-latest.tgz ./puppeteer-core-latest.tgz ./puppeteer-latest.tgz
+
+# Install system dependencies as root.
+USER root
+# Overriding the cache directory to install the deps for the Chrome
+# version installed for pptruser. 
+RUN PUPPETEER_CACHE_DIR=/home/pptruser/.cache/puppeteer \
+  npx puppeteer browsers install chrome --install-deps
+
+USER $PPTRUSER_UID
+# Generate THIRD_PARTY_NOTICES using chrome --credits.
+RUN node -e "require('child_process').execSync(require('puppeteer').executablePath() + ' --credits', {stdio: 'inherit'})" > THIRD_PARTY_NOTICES
