@@ -1,17 +1,21 @@
 const puppeteer = require("puppeteer-core");
-const chromium = require("@sparticuz/chromium");
-
-chromium.setHeadlessMode = true;
-chromium.setGraphicsMode = false;
+const chromium = require("@sparticuz/chromium-min");
 
 const linksLogic = async (channelLink) => {
+  chromium.setHeadlessMode = true;
+  chromium.setGraphicsMode = false;
+  await chromium.font(
+    "https://raw.githack.com/googlei18n/noto-emoji/master/fonts/NotoColorEmoji.ttf"
+  );
   try {
     const URL = `${channelLink}/videos`;
     console.log(URL);
 
     const browser = await puppeteer.launch({
       args: [...chromium.args, "--hide-scrollbars", "--no-sandbox"],
-      executablePath: await chromium.executablePath(),
+      executablePath: await chromium.executablePath(
+        "https://tobiassets.s3.us-east-2.amazonaws.com/chromium-v131.0.1-pack.tar"
+      ),
       headless: chromium.headless,
       defaultViewport: chromium.defaultViewport,
     });
