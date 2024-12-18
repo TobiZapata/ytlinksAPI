@@ -13,10 +13,8 @@ const linksLogic = async (channelLink) => {
         "--single-process",
         "--no-zygote",
       ],
-      executablePath:
-        process.env.NODE_ENV === "production"
-          ? process.env.PUPPETEER_EXECUTABLE_PATH
-          : puppeteer.executablePath(),
+      executablePath: "/usr/bin/google-chrome-stable",
+      headless: true,
     });
 
     const page = await browser.newPage();
