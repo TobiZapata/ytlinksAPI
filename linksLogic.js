@@ -44,10 +44,10 @@ const linksLogic = async (channelLink) => {
     // links de los videos
     const newVideos = await page.evaluate(() => {
       const videos = Array.from(document.querySelectorAll("#video-title-link"));
-      return videos.map((video) => {
+      return videos; /* .map((video) => {
         const href = video.href;
         return { href };
-      });
+      }); */
     });
 
     console.log(newVideos);
