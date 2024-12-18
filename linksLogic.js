@@ -30,7 +30,7 @@ const linksLogic = async (channelLink) => {
     console.log("browser abierto en una nueva ventana");
     await page.goto(URL, { waitUntil: "domcontentloaded" });
 
-    await page.waitForSelector("#video-title", { timeout: 3000 });
+    await page.waitForSelector("#video-title");
     console.log("Selector de videos encontrado");
     //scroll para cargar todos los videos
     let array = [];
