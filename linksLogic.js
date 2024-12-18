@@ -31,7 +31,7 @@ const linksLogic = async (channelLink) => {
 
     //scroll para cargar todos los videos
     console.log("Esperando los enlaces con el selector #video-title-link...");
-    await page.waitForSelector("a#video-title-link", { timeout: 5000 });
+    await page.waitForSelector("a#video-title-link", { timeout: 10000 });
     console.log("Elementos #video-title-link cargados.");
 
     let previousHeight;
