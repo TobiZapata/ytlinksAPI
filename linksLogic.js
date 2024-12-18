@@ -46,10 +46,6 @@ const linksLogic = async (channelLink) => {
       if (newHeight === previousHeight) break;
     }
     console.log("abajo");
-
-    const pageContent = await page.content();
-    console.log("Contenido completo del DOM:");
-    console.log(pageContent);
     // links de los videos
     const videos = await page.evaluate(() => {
       const videoElements = Array.from(
@@ -59,7 +55,7 @@ const linksLogic = async (channelLink) => {
       );
       return videoElements.map((video) => ({ href: video.href }));
     });
-
+    console.log(videos);
     await browser.close();
     return videos;
   } catch (error) {
