@@ -30,8 +30,10 @@ const linksLogic = async (channelLink) => {
     await page.goto(URL, { waitUntil: "domcontentloaded" });
 
     //scroll para cargar todos los videos
+    console.log("Esperando los enlaces con el selector #video-title-link...");
+    await page.waitForSelector("a#video-title-link", { timeout: 5000 });
+    console.log("Elementos #video-title-link cargados.");
 
-    console.log(document.querySelectorAll("#video-title"));
     let previousHeight;
     while (true) {
       previousHeight = await page.evaluate(
@@ -50,7 +52,7 @@ const linksLogic = async (channelLink) => {
     console.log("abajo");
     // links de los videos
     const newVideos = await page.evaluate(() => {
-      const videos = Array.from(document.querySelectorAll("#video-title"));
+      const videos = Array.from(document.querySelectorAll("#video-title-link"));
       return videos.map((video) => {
         const href = video.href;
         return { href };
