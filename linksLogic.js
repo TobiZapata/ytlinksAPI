@@ -29,10 +29,7 @@ const linksLogic = async (channelLink) => {
     console.log("browser abierto en una nueva ventana");
     await page.goto(URL, { waitUntil: "domcontentloaded" });
 
-    //scroll para cargar todos los videos
-    console.log("Esperando los enlaces con el selector #video-title-link...");
-    await page.waitForSelector("#video-title-link", { timeout: 10000 });
-    console.log("Elementos #video-title-link cargados.");
+    //scroll para cargar todos los video
 
     let previousHeight;
     while (true) {
@@ -42,7 +39,7 @@ const linksLogic = async (channelLink) => {
       await page.evaluate(() =>
         window.scrollTo(0, document.documentElement.scrollHeight)
       );
-      await new Promise((resolve) => setTimeout(resolve, 300));
+      await new Promise((resolve) => setTimeout(resolve, 400));
 
       const newHeight = await page.evaluate(
         () => document.documentElement.scrollHeight
