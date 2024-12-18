@@ -30,7 +30,8 @@ const linksLogic = async (channelLink) => {
     await page.goto(URL, { waitUntil: "domcontentloaded" });
 
     //scroll para cargar todos los videos
-    let array = [];
+
+    console.log(document.querySelectorAll("#video-title"));
     let previousHeight;
     while (true) {
       previousHeight = await page.evaluate(
@@ -50,18 +51,16 @@ const linksLogic = async (channelLink) => {
     // links de los videos
     const newVideos = await page.evaluate(() => {
       const videos = Array.from(document.querySelectorAll("#video-title"));
-
       return videos.map((video) => {
         const href = video.href;
         return { href };
       });
     });
 
-    array = [...array, ...newVideos];
-    console.log(array);
+    console.log(newVideos);
     await browser.close();
 
-    return array;
+    return newVideos;
   } catch (error) {
     console.error("Error en linksLogic:", error);
     throw error;
